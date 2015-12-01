@@ -141,9 +141,10 @@
 
 			this.segments.unshift(newHead);
 
-			if (newHead.equal(apple.position)) {
+			var appleHit = this.hitApple(newHead);
+			if (appleHit >= 0) {
 				score++;
-				apple.move();
+				apples[appleHit].move();
 			} else if (newHead.equal(noWalls.position)) {
 				score++;
 				showWalls = false;
@@ -206,6 +207,21 @@
 			return wallCollision || selfCollision;
 
 		};
+
+		// Check if the snake has colided with a apple
+		Snake.prototype.hitApple = function (head) {
+			
+			var appleHit = -1
+
+			for (var i = 0; i < apples.length; i++) {
+				if (head.equal(apples[i].position)) {
+					appleHit = i;
+				};	
+			};
+
+			return appleHit;
+
+		}
 
 		// Check if the snake has colided with a bomb
 		Snake.prototype.hitBomb = function (head) {
@@ -273,8 +289,11 @@
 			this.position = new Block(randomCol, randomRow);
 		};
 
+		// Set the number of apples to 3
+		var nApples = 3;  
+
 		// Set the number of bombs to 5
-		var NBombs = 5;
+		var nBombs = 5;
 
 		// Make a variable which identifies if the NoWalls power up has been eaten
 		var showWalls = true;
@@ -298,9 +317,13 @@
 
 		// Create the snake, apple and bomb objects
 		var snake = new Snake();
-		var apple = new Apple();
+		var apples = [];
+		for (var i = 0; i < nApples; i++) {
+			apples.push(new Apple());
+			apples[i].move();
+		};
 		var bombs = [];
-		for (var i = 0; i <= NBombs; i++) {
+		for (var i = 0; i < nBombs; i++) {
 			bombs.push(new Bomb());
 			bombs[i].move();
 		};
@@ -313,11 +336,15 @@
 			drawScore();
 			snake.move();
 			snake.draw();
-			apple.draw();
+			for (var i = 0; i < apples.length; i++) {
+				apples[i].draw();
+			};
 			for (var i = 0; i < bombs.length; i++) {
 				bombs[i].draw();
 			};
-			noWalls.draw();
+			if (showWalls) {
+				noWalls.draw();
+			};	
 			if (showWalls) {
 				drawBorder();
 			};
