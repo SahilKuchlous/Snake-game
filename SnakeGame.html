@@ -116,6 +116,9 @@
 		// The timeout function to hide the walls for a certain period of time
 		var timeoutId = 0;
 
+		// The addToBody variable to check how many parts to add to the body
+		var addToBody = 0;
+
 		// Create a new head and add it to the beginning of the snake to move the snake in its current direction
 		Snake.prototype.move = function () {
 			
@@ -156,6 +159,10 @@
 					timeoutId = 0;
 				}, 5000);
 				noWalls.move();
+			} else if (newHead.equal(threePoints.position)) {
+				score += 3;
+				addToBody = 2;
+				threePoints.move();
 			} else {
 				var bombHit = this.hitBomb(newHead);
 				if (bombHit >= 0) {
@@ -167,7 +174,11 @@
 					this.segments.pop();
 					bombs[bombHit].move();
 				} else{
-					this.segments.pop();
+					if (addToBody > 0) {
+						addToBody--;
+					} else {
+						this.segments.pop();
+					};
 				};
 			};
 
@@ -315,7 +326,24 @@
 			this.position = new Block(randomCol, randomRow);
 		};
 
-		// Create the snake, apple and bomb objects
+		// The threePoints constructor
+		var ThreePoints = function () {
+			this.position = new Block(10, 10);
+		};
+
+		// Draw a circle at threePoints' position
+		ThreePoints.prototype.draw = function () {
+			this.position.drawCircle("Black")
+		};
+
+		// Move the threePoints to a new random location
+		ThreePoints.prototype.move = function() {
+			var randomCol = Math.floor(Math.random() * (widthInBlocks - 2)) + 1;
+			var randomRow = Math.floor(Math.random() * (heightInBlocks - 2)) + 1;
+			this.position = new Block(randomCol, randomRow);
+		};
+
+		// Create the snake, apple, bomb and powerup objects
 		var snake = new Snake();
 		var apples = [];
 		for (var i = 0; i < nApples; i++) {
@@ -329,6 +357,8 @@
 		};
 		var noWalls = new NoWalls();
 		noWalls.move();
+		var threePoints = new ThreePoints();
+		threePoints.move();
 
 		// Pass an animation function to setInterval
 		var intervalId = setInterval(function () {
@@ -344,10 +374,9 @@
 			};
 			if (showWalls) {
 				noWalls.draw();
-			};	
-			if (showWalls) {
 				drawBorder();
-			};
+			};	
+			threePoints.draw();
 		}, 100);
 
 		// Convert keycodes to directions
