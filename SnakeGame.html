@@ -27,9 +27,6 @@
 		var widthInBlocks = width / blockSize;
 		var heightInBlocks = height / blockSize;
 
-		// Set score to 0
-		var score = 0;
-
 		// Draw the border	
 		var drawBorder = function () {
 			cxt.fillStyle = "Gray";
@@ -50,12 +47,16 @@
 		};
 
 		// Draw the score in the top-left corner
-		var drawScore = function () {
+		var drawScore = function (snakeNumber) {
 			cxt.font = "20px Courier";
 			cxt.fillStyle = "Black";
-			cxt.textAlign = "left";
 			cxt.textBaseline = "top";
-			cxt.fillText("Score: " + score, blockSize, blockSize);
+			cxt.textAlign = "left";
+			cxt.fillText("Score: " + snake.score, blockSize, blockSize);
+			if (snake2 !== null) {
+				cxt.textAlign = "right";
+				cxt.fillText("Score: " + snake2.score, width - blockSize, blockSize);
+			};
 		};
 
 		// Draw a circle
@@ -225,7 +226,7 @@
 			// Pass the animation function to setInterval
 			intervalId = setInterval(function () {
 				cxt.clearRect(0, 0, width, height);
-				drawScore();
+				drawScore(1);
 				snake.move();
 				snake.draw();
 				for (var i = 0; i < apples.length; i++) {
@@ -242,7 +243,8 @@
 			}, 100);
 		
 		});
-
+		
+		var snake2 = null;
 		// Check if the 2 player button was clicked
 		$("#btn2").click(function(){
 
@@ -251,7 +253,7 @@
 			$('#btn2').hide();
 
 			// Create the second snake object
-			var snake2 = new Snake(2);
+			snake2 = new Snake(2);
 
 			// Convert keycodes to directions for snake 2
 			var directions2 = {
@@ -272,7 +274,8 @@
 			// Pass the animation function to setInterval
 			intervalId = setInterval(function () {
 				cxt.clearRect(0, 0, width, height);
-				drawScore();
+				drawScore(1);
+				drawScore(2);
 				snake.move(1);
 				snake.draw();
 				snake2.move(2);

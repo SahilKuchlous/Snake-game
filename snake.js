@@ -2,6 +2,8 @@
 var Snake = function (snakeNumber) {
 
 	this.snakeNumber = snakeNumber;
+
+	this.score = 0;
 	
 	this.segments = [
 		new Block(7, 5),
@@ -77,10 +79,10 @@ Snake.prototype.move = function () {
 
 	var appleHit = this.hitApple(newHead);
 	if (appleHit >= 0) {
-		score++;
+		this.score++;
 		apples[appleHit].move();
 	} else if (newHead.equal(noWalls.position)) {
-		score++;
+		this.score++;
 		showWalls = false;
 		if (timeoutId !== 0) {
 			clearTimeout(timeoutId);
@@ -91,14 +93,14 @@ Snake.prototype.move = function () {
 		}, 5000);
 		noWalls.move();
 	} else if (newHead.equal(threePoints.position)) {
-		score += 3;
+		this.score += 3;
 		addToBody = 2;
 		threePoints.move();
 	} else {
 		var bombHit = this.hitBomb(newHead);
 		if (bombHit >= 0) {
-			score--;
-			if (score < 0) {
+			this.score--;
+			if (this.score < 0) {
 				gameOver();
 			};
 			this.segments.pop();
