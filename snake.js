@@ -1,5 +1,7 @@
 // The Snake constructor
-var Snake = function () {
+var Snake = function (snakeNumber) {
+
+	this.snakeNumber = snakeNumber;
 	
 	this.segments = [
 		new Block(7, 5),
@@ -7,17 +9,32 @@ var Snake = function () {
 		new Block(5, 5)
 	];
 
-	this.direction = "right";
-	this.nextDirection = "right";
+	if (snakeNumber == 1) {
+		this.direction = "right";
+		this.nextDirection = "right";
+	};
+
+	if (snakeNumber == 2) {
+		this.direction = "down2";
+		this.nextDirection = "down2";
+	};
 
 };
 
 // Draw a square for each segment of the snake's body
 Snake.prototype.draw = function () {
-	for (var i = 0; i < this.segments.length; i++) {
-		this.segments[i].drawSquare("Blue");
+	if (this.snakeNumber == 1) {
+		for (var i = 0; i < this.segments.length; i++) {
+			this.segments[i].drawSquare("Blue");
+		};
+	};
+	if (this.snakeNumber == 2) {
+		for (var i = 0; i < this.segments.length; i++) {
+			this.segments[i].drawSquare("Aqua");
+		};
 	};
 };
+
 // Create a new head and add it to the beginning of the snake to move the snake in its current direction
 Snake.prototype.move = function () {
 	
@@ -26,15 +43,30 @@ Snake.prototype.move = function () {
 
 	this.direction = this.nextDirection;
 
-	if (this.direction === "right") {
-		newHead = new Block(head.col + 1, head.row);
-	} else if (this.direction === "down") {
-		newHead = new Block(head.col, head.row + 1);
-	} else if (this.direction === "left") {
-		newHead = new Block(head.col - 1, head.row);
-	} else if (this.direction === "up") {
-		newHead = new Block(head.col, head.row - 1);
-	};
+	if (this.snakeNumber == 1) {
+		if (this.direction === "right") {
+			newHead = new Block(head.col + 1, head.row);
+		} else if (this.direction === "down") {
+			newHead = new Block(head.col, head.row + 1);
+		} else if (this.direction === "left") {
+			newHead = new Block(head.col - 1, head.row);
+		} else if (this.direction === "up") {
+			newHead = new Block(head.col, head.row - 1);
+		};
+	} 
+
+	if (this.snakeNumber == 2) {
+		if (this.direction === "right2") {
+			newHead = new Block(head.col + 1, head.row);
+		} else if (this.direction === "down2") {
+			newHead = new Block(head.col, head.row + 1);
+		} else if (this.direction === "left2") {
+			newHead = new Block(head.col - 1, head.row);
+		} else if (this.direction === "up2") {
+			newHead = new Block(head.col, head.row - 1);
+		};
+	}
+	
 
 	if (this.checkCollision(newHead)) {
 		gameOver();
@@ -150,15 +182,29 @@ Snake.prototype.hitBomb = function (head) {
 
 // Set the snake's next direction based on the keyboard
 Snake.prototype.setDirection = function (newDirection) {
-	
-	if (this.direction === "up" && newDirection === "down") {
-		return;
-	} else if (this.direction === "right" && newDirection === "left") {
-		return;
-	} else if (this.direction === "down" && newDirection === "up") {
-		return;
-	} else if (this.direction === "left" && newDirection === "right") {
-		return;
+
+	if (this.snakeNumber == 1) {
+		if (this.direction === "up" && newDirection === "down") {
+			return;
+		} else if (this.direction === "right" && newDirection === "left") {
+			return;
+		} else if (this.direction === "down" && newDirection === "up") {
+			return;
+		} else if (this.direction === "left" && newDirection === "right") {
+			return;
+		};
+	};
+
+	if (this.snakeNumber == 2) {
+		if (this.direction === "up2" && newDirection === "down2") {
+			return;
+		} else if (this.direction === "right2" && newDirection === "left2") {
+			return;
+		} else if (this.direction === "down2" && newDirection === "up2") {
+			return;
+		} else if (this.direction === "left2" && newDirection === "right2") {
+			return;
+		};
 	};
 	
 	this.nextDirection = newDirection;
