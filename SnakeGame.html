@@ -47,7 +47,7 @@
 		};
 
 		// Draw the score in the top-left corner
-		var drawScore = function (snakeNumber) {
+		var drawScore = function () {
 			cxt.font = "20px Courier";
 			cxt.fillStyle = "Black";
 			cxt.textBaseline = "top";
@@ -226,7 +226,7 @@
 			// Pass the animation function to setInterval
 			intervalId = setInterval(function () {
 				cxt.clearRect(0, 0, width, height);
-				drawScore(1);
+				drawScore();
 				snake.move();
 				snake.draw();
 				for (var i = 0; i < apples.length; i++) {
@@ -274,11 +274,10 @@
 			// Pass the animation function to setInterval
 			intervalId = setInterval(function () {
 				cxt.clearRect(0, 0, width, height);
-				drawScore(1);
-				drawScore(2);
-				snake.move(1);
+				drawScore();
+				snake.move(snake2);
 				snake.draw();
-				snake2.move(2);
+				snake2.move(snake);
 				snake2.draw();
 				for (var i = 0; i < apples.length; i++) {
 					apples[i].draw();

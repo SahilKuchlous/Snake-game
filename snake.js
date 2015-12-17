@@ -38,7 +38,7 @@ Snake.prototype.draw = function () {
 };
 
 // Create a new head and add it to the beginning of the snake to move the snake in its current direction
-Snake.prototype.move = function () {
+Snake.prototype.move = function (otherSnake) {
 	
 	var head = this.segments[0];
 	var newHead;
@@ -69,13 +69,16 @@ Snake.prototype.move = function () {
 		};
 	}
 	
-
 	if (this.checkCollision(newHead)) {
 		gameOver();
 		return;
 	};
 
 	this.segments.unshift(newHead);
+
+	if (otherSnake !== undefined) {
+		this.eatenOtherSnake(otherSnake, newHead);
+	};
 
 	var appleHit = this.hitApple(newHead);
 	if (appleHit >= 0) {
@@ -166,6 +169,21 @@ Snake.prototype.hitApple = function (head) {
 	return appleHit;
 
 }
+
+// Check if a snake has eaten another snake
+Snake.prototype.eatenOtherSnake = function (otherSnake, head) {
+	for (var i = 1; i < otherSnake.segments.length; i++) {
+		if (otherSnake.segments[i].col == head.col && otherSnake.segments[i].row == head.row) {
+			for (var j = i; j < otherSnake.segments.length; j++) {
+				otherSnake.segments.pop();
+				otherSnake.score--;
+				this.score++;
+				addToBody++;
+			};
+			addToBody--;
+		};
+	};
+};
 
 // Check if the snake has colided with a bomb
 Snake.prototype.hitBomb = function (head) {
