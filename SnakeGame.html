@@ -100,6 +100,9 @@
 		// The timeout function to hide the walls for a certain period of time
 		var timeoutId = 0;
 
+		// The timeout function to hide the threePoints for some time after it has been eaten
+		var threePointsTimer = 0;
+
 		// The addToBody variable to check how many parts to add to the body
 		var addToBody = 0;
 
@@ -143,8 +146,11 @@
 		// Set the number of bombs to 5
 		var nBombs = 5;
 
-		// Make a variable which identifies if the NoWalls power up has been eaten
+		// Make a variable which identifies if the NoWalls powerup has been eaten
 		var showWalls = true;
+
+		// Make a variable which identifies if the threePoints powerup has been eaten
+		var showThreePoints = true;
 
 		// The noWalls constructor
 		var NoWalls = function (x, y) {
@@ -239,12 +245,15 @@
 					noWalls.draw();
 					drawBorder();
 				};	
-				threePoints.draw();
+				if (showThreePoints) {
+					threePoints.draw();
+				};	
 			}, 100);
 		
 		});
 		
 		var snake2 = null;
+		
 		// Check if the 2 player button was clicked
 		$("#btn2").click(function(){
 
@@ -288,8 +297,10 @@
 				if (showWalls) {
 					noWalls.draw();
 					drawBorder();
+				};
+				if (showThreePoints) {
+					threePoints.draw();
 				};	
-				threePoints.draw();
 			}, 100);
 
 		});

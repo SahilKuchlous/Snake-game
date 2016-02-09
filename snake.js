@@ -76,10 +76,6 @@ Snake.prototype.move = function (otherSnake) {
 
 	this.segments.unshift(newHead);
 
-	if (otherSnake !== undefined) {
-		this.eatenOtherSnake(otherSnake, newHead);
-	};
-
 	var appleHit = this.hitApple(newHead);
 	if (appleHit >= 0) {
 		this.score++;
@@ -99,6 +95,17 @@ Snake.prototype.move = function (otherSnake) {
 		this.score += 3;
 		addToBody = 2;
 		threePoints.move();
+		showThreePoints = false;
+		if (threePointsTimer !== 0) {
+			clearTimeout(threePointsTimer);
+		};
+		threePointsTimer = setTimeout(function () {
+			showThreePoints = true;
+			threePointsTimer = 0;
+		}, Math.round(Math.random() * 10000));
+		// addToBody is one less than the actual ammount that is supposed to be added since one will be	added anyway as it will not reach this.segments.pop. Same logic for the apples, noWalls and bomb
+	} else if ((otherSnake !== undefined) && (this.eatenOtherSnake(otherSnake, newHead))) {
+		// Called this.eatenOtherSnake here to avoid it from going to this.segments.pop if true
 	} else {
 		var bombHit = this.hitBomb(newHead);
 		if (bombHit >= 0) {
@@ -172,15 +179,18 @@ Snake.prototype.hitApple = function (head) {
 
 // Check if a snake has eaten another snake
 Snake.prototype.eatenOtherSnake = function (otherSnake, head) {
-	for (var i = 1; i < otherSnake.segments.length; i++) {
+	for (var i = 0; i < otherSnake.segments.length; i++) {
 		if (otherSnake.segments[i].col == head.col && otherSnake.segments[i].row == head.row) {
 			for (var j = i; j < otherSnake.segments.length; j++) {
 				otherSnake.segments.pop();
-				otherSnake.score--;
+				otherSnake.score--;ß
 				this.score++;
 				addToBody++;
 			};
 			addToBody--;
+			return true;
+		} else {
+			return false;
 		};
 	};
 };
