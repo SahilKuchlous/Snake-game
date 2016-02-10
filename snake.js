@@ -181,18 +181,22 @@ Snake.prototype.hitApple = function (head) {
 Snake.prototype.eatenOtherSnake = function (otherSnake, head) {
 	for (var i = 0; i < otherSnake.segments.length; i++) {
 		if (otherSnake.segments[i].col == head.col && otherSnake.segments[i].row == head.row) {
+			console.log("Ate at segment " + i);
+			console.log("Scores are:" + this.score + " " + otherSnake.score);
+			console.log("Before eating lengths are:" + this.segments.length + " " + otherSnake.segments.length);
 			for (var j = i; j < otherSnake.segments.length; j++) {
 				otherSnake.segments.pop();
-				otherSnake.score--;ß
+				otherSnake.score--;
 				this.score++;
 				addToBody++;
 			};
 			addToBody--;
+			console.log("After eating scores are:" + this.score + " " + otherSnake.score);
+			console.log("After eating lengths are:" + this.segments.length + " " + otherSnake.segments.length);
 			return true;
-		} else {
-			return false;
-		};
+		}; 
 	};
+	return false;
 };
 
 // Check if the snake has colided with a bomb
