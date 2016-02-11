@@ -1,6 +1,9 @@
 // The Snake constructor
 var Snake = function (snakeNumber) {
 
+	// The this.addToBody variable to check how many parts to add to the body
+	this.addToBody = 0;
+
 	this.snakeNumber = snakeNumber;
 
 	this.score = 0;
@@ -93,7 +96,7 @@ Snake.prototype.move = function (otherSnake) {
 		noWalls.move();
 	} else if (newHead.equal(threePoints.position)) {
 		this.score += 3;
-		addToBody = 2;
+		this.addToBody = 2;
 		threePoints.move();
 		showThreePoints = false;
 		if (threePointsTimer !== 0) {
@@ -103,7 +106,7 @@ Snake.prototype.move = function (otherSnake) {
 			showThreePoints = true;
 			threePointsTimer = 0;
 		}, Math.round(Math.random() * 10000));
-		// addToBody is one less than the actual ammount that is supposed to be added since one will be	added anyway as it will not reach this.segments.pop. Same logic for the apples, noWalls and bomb
+		// This.addToBody is one less than the actual ammount that is supposed to be added since one will be	added anyway as it will not reach this.segments.pop. Same logic for the apples, noWalls and bomb
 	} else if ((otherSnake !== undefined) && (this.eatenOtherSnake(otherSnake, newHead))) {
 		// Called this.eatenOtherSnake here to avoid it from going to this.segments.pop if true
 	} else {
@@ -117,8 +120,8 @@ Snake.prototype.move = function (otherSnake) {
 			this.segments.pop();
 			bombs[bombHit].move();
 		} else{
-			if (addToBody > 0) {
-				addToBody--;
+			if (this.addToBody > 0) {
+				this.addToBody--;
 			} else {
 				this.segments.pop();
 			};
@@ -188,9 +191,9 @@ Snake.prototype.eatenOtherSnake = function (otherSnake, head) {
 				otherSnake.segments.pop();
 				otherSnake.score--;
 				this.score++;
-				addToBody++;
+				this.addToBody++;
 			};
-			addToBody--;
+			this.addToBody--;
 			console.log("After eating scores are:" + this.score + " " + otherSnake.score);
 			console.log("After eating lengths are:" + this.segments.length + " " + otherSnake.segments.length);
 			return true;
