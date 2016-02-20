@@ -37,13 +37,13 @@
 		};
 
 		// Clear the interval and display the game over text
-		var gameOver = function () {
+		var gameOver = function (text) {
 			clearInterval(intervalId);
-			cxt.font = "60px Courier";
+			cxt.font = "40px Courier";
 			cxt.fillStyle = "Black";
 			cxt.textAlign = "center"
 			cxt.textBaseline = "middle";
-			cxt.fillText("Game Over", width / 2, height / 2);
+			cxt.fillText(text, width / 2, height / 2);
 		};
 
 		// Draw the score in the top-left corner
@@ -102,9 +102,6 @@
 
 		// The timeout function to hide the threePoints for some time after it has been eaten
 		var threePointsTimer = 0;
-
-		// The addToBody variable to check how many parts to add to the body
-		var addToBody = 0;
 
 		// The Apple constructor
 		var Apple = function () {
@@ -222,8 +219,13 @@
 			};
 		});
 
+		// A variable to check which game mode has been selected
+		var gameMode;
+
 		// Check if the single player button was clicked
 		$("#btn1").click(function(){
+			// Set gameMode to single player
+			gameMode = "singlePlayer";
 			
 			// Hide the buttons
 			$('#btn1').hide();
@@ -256,6 +258,9 @@
 		
 		// Check if the 2 player button was clicked
 		$("#btn2").click(function(){
+
+			// Set the game mode to 2 player
+			gameMode = "2player";
 
 			// Hide the buttons
 			$('#btn1').hide();

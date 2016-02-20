@@ -73,7 +73,11 @@ Snake.prototype.move = function (otherSnake) {
 	}
 	
 	if (this.checkCollision(newHead)) {
-		gameOver();
+		if (gameMode == "singlePlayer") {
+			gameOver("Game Over");	
+		} else if (gameMode == "2player") {
+			gameOver("Snake " + otherSnake.snakeNumber + " Wins!")
+		};
 		return;
 	};
 
@@ -114,7 +118,11 @@ Snake.prototype.move = function (otherSnake) {
 		if (bombHit >= 0) {
 			this.score--;
 			if (this.score < 0) {
-				gameOver();
+				if (gameMode == "singlePlayer") {
+					gameOver("Game Over");	
+				} else if (gameMode == "2player") {
+					gameOver("Snake " + otherSnake.snakeNumber + " Wins!")
+				};
 			};
 			this.segments.pop();
 			this.segments.pop();
@@ -192,10 +200,11 @@ Snake.prototype.eatenOtherSnake = function (otherSnake, head) {
 				otherSnake.score--;
 				this.score++;
 				this.addToBody++;
+				if (otherSnake.segments.length < 2) {
+					gameOver("Snake " + otherSnake.snakeNumber + " Wins!")
+				};
 			};
 			this.addToBody--;
-			console.log("After eating scores are:" + this.score + " " + otherSnake.score);
-			console.log("After eating lengths are:" + this.segments.length + " " + otherSnake.segments.length);
 			return true;
 		}; 
 	};
